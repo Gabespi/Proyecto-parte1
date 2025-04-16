@@ -2,6 +2,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class PantallaLogin extends JFrame {
 
@@ -105,18 +109,30 @@ public class PantallaLogin extends JFrame {
                 String usuario = campoUsuario.getText().trim();
                 String contraseña = new String(campoPassword.getPassword()).trim();
 
-                // Validar credenciales
-                if ((usuario.equals(USUARIO_VALIDO) || usuario.equals(EMAIL_VALIDO)) && contraseña.equals(CONTRASEÑA_VALIDA)) {
-                    // Crear un objeto Usuario con datos simulados
-                    Usuario usuarioActual = new Usuario(1, "Juan Pérez", "correo@ejemplo.com", "12345", "Usuario");
+                try (Connection conn = DatabaseConnection.getConnection()) {
+                    String sql = "SELECT * FROM Usuarios WHERE (Usuario_Nombre = ? OR Usuario_Correo = ?) AND Usuario_Contraseña = ?";
+                    PreparedStatement stmt = conn.prepareStatement(sql);
+                    stmt.setString(1, usuario);
+                    stmt.setString(2, usuario);
+                    stmt.setString(3, contraseña);
+                    ResultSet rs = stmt.executeQuery();
 
-                    // Credenciales correctas, abrir el PanelUsuario
-                    dispose(); // Cierra la ventana de login
-                    PanelUsuario panelUsuario = new PanelUsuario(usuarioActual);
-                    panelUsuario.setVisible(true);
-                } else {
-                    // Credenciales incorrectas, mostrar mensaje de error
-                    mensajeError.setVisible(true);
+                    if (rs.next()) {
+                        Usuario usuarioActual = new Usuario(
+                            rs.getInt("Usuario_ID"),
+                            rs.getString("Usuario_Nombre"),
+                            rs.getString("Usuario_Correo"),
+                            rs.getString("Usuario_Contraseña"),
+                            "Usuario"
+                        );
+                        dispose();
+                        new PanelUsuario(usuarioActual).setVisible(true);
+                    } else {
+                        mensajeError.setText("Credenciales incorrectas.");
+                        mensajeError.setVisible(true);
+                    }
+                } catch (SQLException ex) {
+                    JOptionPane.showMessageDialog(null, "Error al iniciar sesión: " + ex.getMessage());
                 }
             }
         });
@@ -143,6 +159,26 @@ public class PantallaLogin extends JFrame {
         panel.add(btnRecuperar);
         panel.add(Box.createRigidArea(new Dimension(0, 10)));
         panel.add(panelBotones);
+
+        // Botón "Login Funcionarios"
+        JButton btnLoginFuncionario = new JButton("Login Funcionarios");
+        btnLoginFuncionario.setFont(new Font("Arial", Font.BOLD, 14));
+        btnLoginFuncionario.setBackground(new Color(255, 152, 0)); // Naranja
+        btnLoginFuncionario.setForeground(Color.WHITE);
+        btnLoginFuncionario.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        btnLoginFuncionario.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose(); // Cierra la ventana actual
+                PantallaLoginFuncionario loginFuncionario = new PantallaLoginFuncionario();
+                loginFuncionario.setVisible(true);
+            }
+        });
+
+        // Agregar el botón al panel principal
+        panel.add(Box.createRigidArea(new Dimension(0, 10)));
+        panel.add(btnLoginFuncionario);
 
         // Agregar panel a la ventana
         add(panel);

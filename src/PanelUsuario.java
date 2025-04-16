@@ -1,10 +1,14 @@
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class PanelUsuario extends JFrame {
     private Usuario usuario; // Atributo para almacenar el usuario actual
+    private JTable tablaReportes; // Tabla para mostrar los reportes
 
     public PanelUsuario(Usuario usuario) {
         this.usuario = usuario; // Recibir el usuario como parámetro
@@ -54,28 +58,23 @@ public class PanelUsuario extends JFrame {
         btnRegistrarReporte.setMaximumSize(new Dimension(300, 50));
 
         // Acción del botón "Registrar Nuevo Reporte"
-        btnRegistrarReporte.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Abrir la ventana para registrar un nuevo reporte
-                PantallaRegistrarReporte pantallaRegistrarReporte = new PantallaRegistrarReporte();
-                pantallaRegistrarReporte.setVisible(true);
-            }
+        btnRegistrarReporte.addActionListener(e -> {
+            // Abrir la ventana para registrar un nuevo reporte
+            PantallaRegistrarReporte pantallaRegistrarReporte = new PantallaRegistrarReporte(usuario);
+            pantallaRegistrarReporte.setVisible(true);
         });
 
         // Tabla para mostrar los reportes del usuario
-        String[] columnas = {"ID", "Descripción", "Fecha de Creación", "Estado"};
-        Object[][] datos = {
-                {1, "Bache en la calle principal", "01/10/2023 10:30:00", "En espera"},
-                {2, "Fuga de agua en el parque", "02/10/2023 14:45:00", "En proceso"},
-                {3, "Lámpara rota en la plaza", "03/10/2023 09:15:00", "Finalizado"}
-        };
-
-        JTable tablaReportes = new JTable(datos, columnas);
+        String[] columnas = {"ID", "Categoría", "Descripción", "Ubicación", "Estado", "Fecha de Creación"};
+        DefaultTableModel modeloTabla = new DefaultTableModel(columnas, 0);
+        tablaReportes = new JTable(modeloTabla);
         tablaReportes.setFont(new Font("Arial", Font.PLAIN, 14));
         tablaReportes.setRowHeight(30);
         JScrollPane scrollPane = new JScrollPane(tablaReportes);
         scrollPane.setPreferredSize(new Dimension(700, 300));
+
+        // Cargar los reportes desde la base de datos
+        cargarReportes(modeloTabla);
 
         // Panel de notificaciones
         JPanel panelNotificaciones = new JPanel();
@@ -104,6 +103,29 @@ public class PanelUsuario extends JFrame {
 
         // Agregar panel principal a la ventana
         add(panelPrincipal);
+    }
+
+    private void cargarReportes(DefaultTableModel modeloTabla) {
+        try (Connection conn = DatabaseConnection.getConnection()) {
+            String sql = "SELECT Reporte_ID, Reporte_Categoria, Reporte_Descripcion, Reporte_Ubicacion, Reporte_Estado, Reporte_Fecha_De_Creacion " +
+                         "FROM Reporte WHERE Reporte_ID_Usuario = ?";
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, usuario.getIdUsuario());
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                modeloTabla.addRow(new Object[]{
+                        rs.getInt("Reporte_ID"),
+                        rs.getString("Reporte_Categoria"),
+                        rs.getString("Reporte_Descripcion"),
+                        rs.getString("Reporte_Ubicacion"),
+                        rs.getString("Reporte_Estado"),
+                        rs.getString("Reporte_Fecha_De_Creacion")
+                });
+            }
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(this, "Error al cargar los reportes: " + ex.getMessage());
+        }
     }
 
     public static void main(String[] args) {
