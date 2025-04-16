@@ -1,4 +1,3 @@
-
 public class PantallaLogin {
     
 }
@@ -110,17 +109,12 @@ public class PantallaLogin extends JFrame {
                 String usuario = campoUsuario.getText().trim();
                 String contraseña = new String(campoPassword.getPassword()).trim();
 
-                // Validar credenciales
                 if ((usuario.equals(USUARIO_VALIDO) || usuario.equals(EMAIL_VALIDO)) && contraseña.equals(CONTRASEÑA_VALIDA)) {
-                    // Crear un objeto Usuario con datos simulados
                     Usuario usuarioActual = new Usuario(1, "Juan Pérez", "correo@ejemplo.com", "12345", "Usuario");
-
-                    // Credenciales correctas, abrir el PanelUsuario
-                    dispose(); // Cierra la ventana de login
+                    dispose();
                     PanelUsuario panelUsuario = new PanelUsuario(usuarioActual);
                     panelUsuario.setVisible(true);
                 } else {
-                    // Credenciales incorrectas, mostrar mensaje de error
                     mensajeError.setVisible(true);
                 }
             }
@@ -160,4 +154,4 @@ public class PantallaLogin extends JFrame {
         });
     }
 }
- 
+

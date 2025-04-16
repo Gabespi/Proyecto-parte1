@@ -1,4 +1,3 @@
-
 public class PantallaRegistrarReporte {
     
 }
@@ -12,7 +11,7 @@ public class PantallaRegistrarReporte extends JFrame { // Cambiado el nombre de 
     
     public PantallaRegistrarReporte() {
         // Configuración de la ventana
-        setTitle("Registro de Usuario");
+        setTitle("Registrar Reporte");
         setSize(400, 400);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
@@ -92,52 +91,13 @@ public class PantallaRegistrarReporte extends JFrame { // Cambiado el nombre de 
         btnCrearCuenta.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                boolean hayErrores = false;
-
-                // Resetea los colores antes de validar
-                resetearColores(campoNombre, campoApellidoPaterno, campoApellidoMaterno,
-                        campoTelefono, campoUsuario, campoCorreo, campoPassword, campoPasswordConfirm);
-
-                String nombre = campoNombre.getText().trim();
-                String apellidoPaterno = campoApellidoPaterno.getText().trim();
-                String apellidoMaterno = campoApellidoMaterno.getText().trim();
-                String telefono = campoTelefono.getText().trim();
-                String usuario = campoUsuario.getText().trim();
-                String correo = campoCorreo.getText().trim();
-                String contraseña = new String(campoPassword.getPassword()).trim();
-                String confirmarContraseña = new String(campoPasswordConfirm.getPassword()).trim();
-
-                // Validar género seleccionado
-                String genero = "";
-                if (radioMasculino.isSelected()) genero = "Masculino";
-                else if (radioFemenino.isSelected()) genero = "Femenino";
-                else if (radioOtro.isSelected()) genero = "Otro";
-
-                // Validaciones y cambio de color si hay error
-                if (nombre.isEmpty()) { campoNombre.setBackground(Color.PINK); hayErrores = true; }
-                if (apellidoPaterno.isEmpty()) { campoApellidoPaterno.setBackground(Color.PINK); hayErrores = true; }
-                if (apellidoMaterno.isEmpty()) { campoApellidoMaterno.setBackground(Color.PINK); hayErrores = true; }
-                if (genero.isEmpty()) { mensajeError.setText("Seleccione un género."); hayErrores = true; }
-                if (telefono.isEmpty() || !telefono.matches("\\d{10}")) { campoTelefono.setBackground(Color.PINK); hayErrores = true; }
-                if (usuario.isEmpty()) { campoUsuario.setBackground(Color.PINK); hayErrores = true; }
-                if (correo.isEmpty() || !correo.contains("@") || !correo.contains(".")) { campoCorreo.setBackground(Color.PINK); hayErrores = true; }
-                if (contraseña.isEmpty()) { campoPassword.setBackground(Color.PINK); hayErrores = true; }
-                if (confirmarContraseña.isEmpty() || !contraseña.equals(confirmarContraseña)) { campoPasswordConfirm.setBackground(Color.PINK); hayErrores = true; }
-
-                // Mostrar mensaje si hay errores
-                if (hayErrores) {
-                    mensajeError.setText("Corrige los campos en rojo.");
+                if (campoNombre.getText().trim().isEmpty()) {
+                    campoNombre.setBackground(Color.PINK);
+                    mensajeError.setText("El campo Nombre es obligatorio.");
                     return;
                 }
-
-                // Registro exitoso
-                mensajeError.setForeground(new Color(0, 128, 0)); // Verde éxito
-                mensajeError.setText("Registro exitoso.");
-                JOptionPane.showMessageDialog(null, "¡Cuenta creada con éxito!\nGénero: " + genero);
-
+                JOptionPane.showMessageDialog(null, "Reporte registrado con éxito.");
                 dispose(); // Cierra la ventana actual
-                PantallaLogin login = new PantallaLogin(); // Abre la pantalla de login
-                login.setVisible(true);
             }
         });
 
