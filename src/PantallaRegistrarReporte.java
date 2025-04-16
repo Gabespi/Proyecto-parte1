@@ -7,155 +7,102 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 public class PantallaRegistrarReporte extends JFrame { // Cambiado el nombre de la clase
     
-    public PantallaRegistrarReporte() {
-        // Configuración de la ventana
-        setTitle("Registro de Usuario");
-        setSize(400, 400);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    public PantallaRegistrarReporte(Usuario usuario) { // Recibe el usuario actual
+        setTitle("Registrar Reporte"); // Cambiar el título
+        setSize(400, 500); // Aumentar el tamaño de la ventana
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
         setResizable(false);
 
-        // Panel principal con BoxLayout
-        JPanel panelPrincipal = new JPanel();
-        panelPrincipal.setLayout(new BoxLayout(panelPrincipal, BoxLayout.Y_AXIS));
-        panelPrincipal.setBackground(Color.WHITE);
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        panel.setBackground(Color.WHITE);
 
-        // Panel de contenido dentro del JScrollPane
-        JPanel panelContenido = new JPanel();
-        panelContenido.setLayout(new BoxLayout(panelContenido, BoxLayout.Y_AXIS));
-        panelContenido.setBackground(Color.WHITE);
-        panelContenido.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20)); // Margen interno
-
-        // ScrollPane para permitir desplazamiento
-        JScrollPane scrollPane = new JScrollPane(panelContenido);
-        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-        scrollPane.getVerticalScrollBar().setUnitIncrement(16); // Aumenta velocidad del scroll
-        scrollPane.setBorder(null); // Sin borde extra
-        add(scrollPane);
-
-        // Etiqueta de título
-        JLabel titulo = new JLabel("Crear Cuenta");
-        titulo.setFont(new Font("Arial", Font.BOLD, 22));
+        JLabel titulo = new JLabel("Registrar Reporte");
+        titulo.setFont(new Font("Arial", Font.BOLD, 20));
         titulo.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        panelContenido.add(titulo);
-        panelContenido.add(Box.createRigidArea(new Dimension(0, 15)));
+        // ComboBox para seleccionar la categoría
+        JLabel labelCategoria = new JLabel("Categoría:");
+        labelCategoria.setFont(new Font("Arial", Font.BOLD, 14));
+        labelCategoria.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        // Campos de entrada
-        JTextField campoNombre = crearCampoTexto("Nombre");
-        JTextField campoApellidoPaterno = crearCampoTexto("Apellido Paterno");
-        JTextField campoApellidoMaterno = crearCampoTexto("Apellido Materno");
+        String[] categorias = {"Baches", "Alumbrado", "Basura", "Fugas", "Circulación", "Otro"};
+        JComboBox<String> comboCategoria = new JComboBox<>(categorias);
+        comboCategoria.setMaximumSize(new Dimension(300, 30));
 
-        // Selección de Género
-        JLabel labelGenero = new JLabel("Género:");
-        labelGenero.setFont(new Font("Arial", Font.BOLD, 14));
-        labelGenero.setAlignmentX(Component.CENTER_ALIGNMENT);
+        // Campos de texto con mayor altura
+        JTextArea campoDescripcion = crearCampoTextoArea("Descripción");
+        JTextArea campoUbicacion = crearCampoTextoArea("Ubicación");
+        JTextArea campoRutaArchivos = crearCampoTextoArea("Ruta de Archivos");
 
-        JRadioButton radioMasculino = new JRadioButton("Masculino");
-        JRadioButton radioFemenino = new JRadioButton("Femenino");
-        JRadioButton radioOtro = new JRadioButton("Otro");
+        JButton btnRegistrar = new JButton("Registrar Reporte");
+        btnRegistrar.setFont(new Font("Arial", Font.BOLD, 14));
+        btnRegistrar.setBackground(new Color(33, 150, 243));
+        btnRegistrar.setForeground(Color.WHITE);
+        btnRegistrar.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        ButtonGroup grupoGenero = new ButtonGroup();
-        grupoGenero.add(radioMasculino);
-        grupoGenero.add(radioFemenino);
-        grupoGenero.add(radioOtro);
-
-        JPanel panelGenero = new JPanel();
-        panelGenero.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 0)); // Ajuste sin espacio innecesario
-        panelGenero.setBackground(Color.WHITE);
-        panelGenero.add(radioMasculino);
-        panelGenero.add(radioFemenino);
-        panelGenero.add(radioOtro);
-
-        JTextField campoTelefono = crearCampoTexto("Número de Teléfono");
-        JTextField campoUsuario = crearCampoTexto("Nombre de Usuario");
-        JTextField campoCorreo = crearCampoTexto("Correo Electrónico");
-        JPasswordField campoPassword = crearCampoContraseña("Contraseña");
-        JPasswordField campoPasswordConfirm = crearCampoContraseña("Confirmar Contraseña");
-
-        // Mensaje de error
-        JLabel mensajeError = new JLabel(" ");
-        mensajeError.setForeground(Color.RED);
-        mensajeError.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-        // Botón "Crear Cuenta"
-        JButton btnCrearCuenta = new JButton("Crear Cuenta");
-        btnCrearCuenta.setFont(new Font("Arial", Font.BOLD, 14));
-        btnCrearCuenta.setBackground(new Color(33, 150, 243)); // Azul
-        btnCrearCuenta.setForeground(Color.WHITE);
-        btnCrearCuenta.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-        // Acción del botón "Crear Cuenta"
-        btnCrearCuenta.addActionListener(new ActionListener() {
+        btnRegistrar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                boolean hayErrores = false;
+                String categoria = (String) comboCategoria.getSelectedItem();
+                String descripcion = campoDescripcion.getText().trim();
+                String ubicacion = campoUbicacion.getText().trim();
+                String rutaArchivos = campoRutaArchivos.getText().trim();
 
-                // Resetea los colores antes de validar
-                resetearColores(campoNombre, campoApellidoPaterno, campoApellidoMaterno,
-                        campoTelefono, campoUsuario, campoCorreo, campoPassword, campoPasswordConfirm);
-
-                String nombre = campoNombre.getText().trim();
-                String apellidoPaterno = campoApellidoPaterno.getText().trim();
-                String apellidoMaterno = campoApellidoMaterno.getText().trim();
-                String telefono = campoTelefono.getText().trim();
-                String usuario = campoUsuario.getText().trim();
-                String correo = campoCorreo.getText().trim();
-                String contraseña = new String(campoPassword.getPassword()).trim();
-                String confirmarContraseña = new String(campoPasswordConfirm.getPassword()).trim();
-
-                // Validar género seleccionado
-                String genero = "";
-                if (radioMasculino.isSelected()) genero = "Masculino";
-                else if (radioFemenino.isSelected()) genero = "Femenino";
-                else if (radioOtro.isSelected()) genero = "Otro";
-
-                // Validaciones y cambio de color si hay error
-                if (nombre.isEmpty()) { campoNombre.setBackground(Color.PINK); hayErrores = true; }
-                if (apellidoPaterno.isEmpty()) { campoApellidoPaterno.setBackground(Color.PINK); hayErrores = true; }
-                if (apellidoMaterno.isEmpty()) { campoApellidoMaterno.setBackground(Color.PINK); hayErrores = true; }
-                if (genero.isEmpty()) { mensajeError.setText("Seleccione un género."); hayErrores = true; }
-                if (telefono.isEmpty() || !telefono.matches("\\d{10}")) { campoTelefono.setBackground(Color.PINK); hayErrores = true; }
-                if (usuario.isEmpty()) { campoUsuario.setBackground(Color.PINK); hayErrores = true; }
-                if (correo.isEmpty() || !correo.contains("@") || !correo.contains(".")) { campoCorreo.setBackground(Color.PINK); hayErrores = true; }
-                if (contraseña.isEmpty()) { campoPassword.setBackground(Color.PINK); hayErrores = true; }
-                if (confirmarContraseña.isEmpty() || !contraseña.equals(confirmarContraseña)) { campoPasswordConfirm.setBackground(Color.PINK); hayErrores = true; }
-
-                // Mostrar mensaje si hay errores
-                if (hayErrores) {
-                    mensajeError.setText("Corrige los campos en rojo.");
+                if (descripcion.isEmpty() || ubicacion.isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "Por favor, complete todos los campos obligatorios.");
                     return;
                 }
 
-                // Registro exitoso
-                mensajeError.setForeground(new Color(0, 128, 0)); // Verde éxito
-                mensajeError.setText("Registro exitoso.");
-                JOptionPane.showMessageDialog(null, "¡Cuenta creada con éxito!\nGénero: " + genero);
+                try (Connection conn = DatabaseConnection.getConnection()) {
+                    String sql = "INSERT INTO Reporte (Reporte_Categoria, Reporte_Descripcion, Reporte_Ubicacion, Reporte_Ruta_Archivos, Reporte_Notificacion, Reporte_Estado, Reporte_Fecha_De_Creacion, Reporte_ID_Usuario) VALUES (?, ?, ?, ?, ?, ?, datetime('now'), ?)";
+                    PreparedStatement stmt = conn.prepareStatement(sql);
+                    stmt.setString(1, categoria);
+                    stmt.setString(2, descripcion);
+                    stmt.setString(3, ubicacion);
+                    stmt.setString(4, rutaArchivos);
+                    stmt.setString(5, ""); // Notificación vacía por defecto
+                    stmt.setString(6, "En espera"); // Estado inicial
+                    stmt.setInt(7, usuario.getIdUsuario()); // ID del usuario actual
+                    stmt.executeUpdate();
 
-                dispose(); // Cierra la ventana actual
-                PantallaLogin login = new PantallaLogin(); // Abre la pantalla de login
-                login.setVisible(true);
+                    JOptionPane.showMessageDialog(null, "¡Reporte registrado con éxito!");
+                    dispose();
+                } catch (SQLException ex) {
+                    JOptionPane.showMessageDialog(null, "Error al registrar el reporte: " + ex.getMessage());
+                }
             }
         });
 
-        // Agregar componentes al panelContenido
-        panelContenido.add(campoNombre);
-        panelContenido.add(campoApellidoPaterno);
-        panelContenido.add(campoApellidoMaterno);
-        panelContenido.add(labelGenero);
-        panelContenido.add(panelGenero);
-        panelContenido.add(Box.createRigidArea(new Dimension(0, 5))); // Se redujo espacio extra
-        panelContenido.add(campoTelefono);
-        panelContenido.add(campoUsuario);
-        panelContenido.add(campoCorreo);
-        panelContenido.add(campoPassword);
-        panelContenido.add(campoPasswordConfirm);
-        panelContenido.add(mensajeError);
-        panelContenido.add(Box.createRigidArea(new Dimension(0, 5))); // Espacio corregido
-        panelContenido.add(btnCrearCuenta);
+        panel.add(titulo);
+        panel.add(Box.createRigidArea(new Dimension(0, 10)));
+        panel.add(labelCategoria);
+        panel.add(comboCategoria);
+        panel.add(Box.createRigidArea(new Dimension(0, 10)));
+        panel.add(campoDescripcion);
+        panel.add(campoUbicacion);
+        panel.add(campoRutaArchivos);
+        panel.add(Box.createRigidArea(new Dimension(0, 10)));
+        panel.add(btnRegistrar);
+
+        add(panel);
+    }
+
+    // Método para crear un JTextArea con mayor altura
+    private JTextArea crearCampoTextoArea(String titulo) {
+        JTextArea campo = new JTextArea(3, 20); // 3 filas de altura
+        campo.setLineWrap(true);
+        campo.setWrapStyleWord(true);
+        campo.setBorder(BorderFactory.createTitledBorder(titulo));
+        campo.setMaximumSize(new Dimension(300, 80)); // Ajustar el tamaño máximo
+        return campo;
     }
 
     // Métodos para crear campos de texto con bordes personalizados
@@ -180,10 +127,10 @@ public class PantallaRegistrarReporte extends JFrame { // Cambiado el nombre de 
         }
     }
 
-      public static void main(String[] args) {
+    public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-            PantallaRegistrarReporte registro = new PantallaRegistrarReporte();
-            registro.setVisible(true);
+            PantallaRegistrarReporte Reporte = new PantallaRegistrarReporte(new Usuario());
+            Reporte.setVisible(true);
         });
     }
 }

@@ -7,6 +7,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 public class PantallaRegistro extends JFrame {
     
@@ -98,7 +101,7 @@ public class PantallaRegistro extends JFrame {
                 resetearColores(campoNombre, campoApellidoPaterno, campoApellidoMaterno,
                         campoTelefono, campoUsuario, campoCorreo, campoPassword, campoPasswordConfirm);
 
-                String nombre = campoNombre.getText().trim();
+                String primerNombre = campoNombre.getText().trim();
                 String apellidoPaterno = campoApellidoPaterno.getText().trim();
                 String apellidoMaterno = campoApellidoMaterno.getText().trim();
                 String telefono = campoTelefono.getText().trim();
@@ -114,7 +117,7 @@ public class PantallaRegistro extends JFrame {
                 else if (radioOtro.isSelected()) genero = "Otro";
 
                 // Validaciones y cambio de color si hay error
-                if (nombre.isEmpty()) { campoNombre.setBackground(Color.PINK); hayErrores = true; }
+                if (primerNombre.isEmpty()) { campoNombre.setBackground(Color.PINK); hayErrores = true; }
                 if (apellidoPaterno.isEmpty()) { campoApellidoPaterno.setBackground(Color.PINK); hayErrores = true; }
                 if (apellidoMaterno.isEmpty()) { campoApellidoMaterno.setBackground(Color.PINK); hayErrores = true; }
                 if (genero.isEmpty()) { mensajeError.setText("Seleccione un género."); hayErrores = true; }
@@ -130,14 +133,26 @@ public class PantallaRegistro extends JFrame {
                     return;
                 }
 
-                // Registro exitoso
-                mensajeError.setForeground(new Color(0, 128, 0)); // Verde éxito
-                mensajeError.setText("Registro exitoso.");
-                JOptionPane.showMessageDialog(null, "¡Cuenta creada con éxito!\nGénero: " + genero);
+                // Insertar en la base de datos
+                try (Connection conn = DatabaseConnection.getConnection()) {
+                    String sql = "INSERT INTO Usuarios (Usuario_Nombre, Usuario_Correo, Usuario_Contraseña, Usuario_Genero, Usuario_Telefono, Usuario_Primer_Nombre, Usuario_Apellido_Paterno, Usuario_Apellido_Materno) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+                    PreparedStatement stmt = conn.prepareStatement(sql);
+                    stmt.setString(1, usuario);
+                    stmt.setString(2, correo);
+                    stmt.setString(3, contraseña);
+                    stmt.setString(4, genero);
+                    stmt.setString(5, telefono);
+                    stmt.setString(6, primerNombre);
+                    stmt.setString(7, apellidoPaterno);
+                    stmt.setString(8, apellidoMaterno);
+                    stmt.executeUpdate();
 
-                dispose(); // Cierra la ventana actual
-                PantallaLogin login = new PantallaLogin(); // Abre la pantalla de login
-                login.setVisible(true);
+                    JOptionPane.showMessageDialog(null, "¡Cuenta creada con éxito!");
+                    dispose();
+                    new PantallaLogin().setVisible(true);
+                } catch (SQLException ex) {
+                    JOptionPane.showMessageDialog(null, "Error al registrar el usuario: " + ex.getMessage());
+                }
             }
         });
 

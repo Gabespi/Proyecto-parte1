@@ -7,6 +7,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 public class PantallaCambiarContraseña extends JFrame {
     
@@ -60,23 +63,28 @@ public class PantallaCambiarContraseña extends JFrame {
                 String nuevaContraseña = new String(campoNuevaContraseña.getPassword());
                 String confirmarContraseña = new String(campoConfirmarContraseña.getPassword());
 
-                if (!contraseñaActual.equals(CONTRASEÑA_ACTUAL)) {
-                    mensajeError.setText("La contraseña actual es incorrecta.");
-                    return;
-                }
-                if (nuevaContraseña.isEmpty()) {
-                    mensajeError.setText("La nueva contraseña no puede estar vacía.");
-                    return;
-                }
                 if (!nuevaContraseña.equals(confirmarContraseña)) {
                     mensajeError.setText("Las contraseñas no coinciden.");
                     return;
                 }
 
-                JOptionPane.showMessageDialog(null, "¡Contraseña cambiada con éxito!");
+                try (Connection conn = DatabaseConnection.getConnection()) {
+                    String sql = "UPDATE Usuarios SET Usuario_Contraseña = ? WHERE Usuario_Contraseña = ?";
+                    PreparedStatement stmt = conn.prepareStatement(sql);
+                    stmt.setString(1, nuevaContraseña);
+                    stmt.setString(2, contraseñaActual);
 
-                dispose();
-                new PantallaLogin().setVisible(true);
+                    int filasActualizadas = stmt.executeUpdate();
+                    if (filasActualizadas > 0) {
+                        JOptionPane.showMessageDialog(null, "¡Contraseña cambiada con éxito!");
+                        dispose();
+                        new PantallaLogin().setVisible(true);
+                    } else {
+                        mensajeError.setText("La contraseña actual es incorrecta.");
+                    }
+                } catch (SQLException ex) {
+                    JOptionPane.showMessageDialog(null, "Error al cambiar la contraseña: " + ex.getMessage());
+                }
             }
         });
 
