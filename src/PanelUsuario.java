@@ -14,7 +14,7 @@ public class PanelUsuario extends JFrame {
     public PanelUsuario(Usuario usuario) {
         this.usuario = usuario; // Recibir el usuario como parámetro
 
- main
+ 
         // Configuración de la ventana
         setTitle("Panel de Usuario");
         setSize(800, 600);
@@ -32,7 +32,7 @@ public class PanelUsuario extends JFrame {
         panelSuperior.setBackground(new Color(33, 150, 243)); // Azul
         panelSuperior.setPreferredSize(new Dimension(800, 60));
         panelSuperior.setLayout(new BorderLayout());
- main
+ 
 
         JLabel titulo = new JLabel("Panel de Usuario");
         titulo.setFont(new Font("Arial", Font.BOLD, 24));
@@ -49,7 +49,7 @@ public class PanelUsuario extends JFrame {
 
         panelSuperior.add(titulo, BorderLayout.WEST);
         panelSuperior.add(datosUsuario, BorderLayout.EAST);
- main
+ 
 
         // Panel central con las funcionalidades
         JPanel panelCentral = new JPanel();
@@ -138,14 +138,11 @@ public class PanelUsuario extends JFrame {
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-            PanelUsuario panel = new PanelUsuario();
+            // Crear un usuario de ejemplo
+            Usuario usuarioEjemplo = new Usuario(1, "Juan Pérez", "juan.perez@example.com", "12345", "Usuario");
 
-        // Crear un usuario de ejemplo
-        Usuario usuarioEjemplo = new Usuario(1, "Juan Pérez", "juan.perez@example.com", "12345", "Usuario");
-
-        SwingUtilities.invokeLater(() -> {
+            // Crear y mostrar el panel de usuario
             PanelUsuario panel = new PanelUsuario(usuarioEjemplo);
- main
             panel.setVisible(true);
         });
     }
