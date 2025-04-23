@@ -1,4 +1,3 @@
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -18,7 +17,7 @@ public class PantallaLogin extends JFrame {
     public PantallaLogin() {
         // Configuración de la ventana
         setTitle("Sistema de Sugerencias y Quejas");
-        setSize(400, 400);
+        setSize(480, 480);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setResizable(false);
@@ -54,6 +53,23 @@ public class PantallaLogin extends JFrame {
         JPasswordField campoPassword = new JPasswordField();
         campoPassword.setMaximumSize(new Dimension(300, 30));
         campoPassword.setBorder(BorderFactory.createTitledBorder("Contraseña"));
+
+        // Checkbox "Ver Contraseña"
+        JCheckBox verContraseña = new JCheckBox("Ver Contraseña");
+        verContraseña.setBackground(Color.WHITE);
+        verContraseña.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        // Acción del checkbox "Ver Contraseña"
+        verContraseña.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (verContraseña.isSelected()) {
+                    campoPassword.setEchoChar((char) 0); // Muestra el texto
+                } else {
+                    campoPassword.setEchoChar('•'); // Oculta el texto
+                }
+            }
+        });
 
         // Checkbox "Recordar Sesión"
         JCheckBox recordarSesion = new JCheckBox("Recordar sesión");
@@ -152,6 +168,8 @@ public class PantallaLogin extends JFrame {
         panel.add(campoUsuario);
         panel.add(Box.createRigidArea(new Dimension(0, 10)));
         panel.add(campoPassword);
+        panel.add(Box.createRigidArea(new Dimension(0, 5)));
+        panel.add(verContraseña); // Agregar el checkbox debajo del campo de contraseña
         panel.add(Box.createRigidArea(new Dimension(0, 10)));
         panel.add(recordarSesion);
         panel.add(Box.createRigidArea(new Dimension(0, 10)));
@@ -192,4 +210,4 @@ public class PantallaLogin extends JFrame {
         });
     }
 }
- 
+

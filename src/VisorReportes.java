@@ -130,6 +130,13 @@ public class VisorReportes extends JFrame {
 
         // Cargar datos al iniciar
         cargarDatos();
+
+        // Configurar WAL
+        try (Connection conn = DatabaseConnection.getConnection()) {
+            conn.createStatement().execute("PRAGMA journal_mode=WAL;");
+        } catch (SQLException ex) {
+            System.err.println("Error al configurar WAL: " + ex.getMessage());
+        }
     }
 
     private void cargarDatos() {
@@ -171,7 +178,6 @@ public class VisorReportes extends JFrame {
         String categoria = (String) modeloTabla.getValueAt(filaSeleccionada, 1);
         String descripcion = (String) modeloTabla.getValueAt(filaSeleccionada, 2);
         String ubicacion = (String) modeloTabla.getValueAt(filaSeleccionada, 3);
-        String fecha = (String) modeloTabla.getValueAt(filaSeleccionada, 4);
         String archivoAdjunto = (String) modeloTabla.getValueAt(filaSeleccionada, 5);
         String estado = (String) modeloTabla.getValueAt(filaSeleccionada, 6);
 
@@ -193,17 +199,29 @@ public class VisorReportes extends JFrame {
         int opcion = JOptionPane.showConfirmDialog(this, mensaje, "Editar Reporte", JOptionPane.OK_CANCEL_OPTION);
         if (opcion == JOptionPane.OK_OPTION) {
             try (Connection conn = DatabaseConnection.getConnection()) {
+                // Actualizar el reporte
                 String sql = "UPDATE Reporte SET Reporte_Categoria = ?, Reporte_Descripcion = ?, " +
                              "Reporte_Ubicacion = ?, Reporte_Ruta_Archivos = ?, Reporte_Estado = ? " +
                              "WHERE Reporte_ID = ?";
-                PreparedStatement stmt = conn.prepareStatement(sql);
-                stmt.setString(1, campoCategoria.getText().trim());
-                stmt.setString(2, campoDescripcion.getText().trim());
-                stmt.setString(3, campoUbicacion.getText().trim());
-                stmt.setString(4, campoArchivoAdjunto.getText().trim());
-                stmt.setString(5, campoEstado.getText().trim());
-                stmt.setInt(6, idReporte);
-                stmt.executeUpdate();
+                try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+                    stmt.setString(1, campoCategoria.getText().trim());
+                    stmt.setString(2, campoDescripcion.getText().trim());
+                    stmt.setString(3, campoUbicacion.getText().trim());
+                    stmt.setString(4, campoArchivoAdjunto.getText().trim());
+                    stmt.setString(5, campoEstado.getText().trim());
+                    stmt.setInt(6, idReporte);
+                    stmt.executeUpdate();
+                }
+
+                // Registrar la notificación
+                String mensajeNotificacion = "El reporte #" + idReporte + " ha sido actualizado.";
+                String sqlNotificacion = "INSERT INTO Notificaciones (Reporte_ID, Usuario_ID, Mensaje) VALUES (?, ?, ?)";
+                try (PreparedStatement stmtNotificacion = conn.prepareStatement(sqlNotificacion)) {
+                    stmtNotificacion.setInt(1, idReporte);
+                    stmtNotificacion.setInt(2, obtenerIdUsuarioPorReporte(conn, idReporte));
+                    stmtNotificacion.setString(3, mensajeNotificacion);
+                    stmtNotificacion.executeUpdate();
+                }
 
                 JOptionPane.showMessageDialog(this, "Reporte actualizado con éxito.");
                 cargarDatos(); // Recargar los datos
@@ -211,6 +229,17 @@ public class VisorReportes extends JFrame {
                 JOptionPane.showMessageDialog(this, "Error al actualizar el reporte: " + ex.getMessage());
             }
         }
+    }
+
+    private int obtenerIdUsuarioPorReporte(Connection conn, int idReporte) throws SQLException {
+        String sql = "SELECT Reporte_ID_Usuario FROM Reporte WHERE Reporte_ID = ?";
+        PreparedStatement stmt = conn.prepareStatement(sql);
+        stmt.setInt(1, idReporte);
+        ResultSet rs = stmt.executeQuery();
+        if (rs.next()) {
+            return rs.getInt("Reporte_ID_Usuario");
+        }
+        return -1; // Retorna -1 si no se encuentra el usuario
     }
 
     public static void main(String[] args) {

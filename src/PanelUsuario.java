@@ -90,13 +90,7 @@ public class PanelUsuario extends JFrame {
         panelNotificaciones.setBackground(Color.WHITE);
         panelNotificaciones.setBorder(BorderFactory.createTitledBorder("Notificaciones"));
 
-        JLabel notificacion1 = new JLabel("El reporte #2 ha cambiado a 'En proceso'.");
-        JLabel notificacion2 = new JLabel("El reporte #3 ha sido finalizado.");
-        notificacion1.setFont(new Font("Arial", Font.PLAIN, 14));
-        notificacion2.setFont(new Font("Arial", Font.PLAIN, 14));
-
-        panelNotificaciones.add(notificacion1);
-        panelNotificaciones.add(notificacion2);
+        cargarNotificaciones(panelNotificaciones);
 
         // Agregar componentes al panel central
         panelCentral.add(btnRegistrarReporte);
@@ -134,6 +128,31 @@ public class PanelUsuario extends JFrame {
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(this, "Error al cargar los reportes: " + ex.getMessage());
         }
+    }
+
+    private void cargarNotificaciones(JPanel panelNotificaciones) {
+        panelNotificaciones.removeAll(); // Limpiar notificaciones previas
+
+        try (Connection conn = DatabaseConnection.getConnection()) {
+            String sql = "SELECT Mensaje, Fecha FROM Notificaciones WHERE Usuario_ID = ? ORDER BY Fecha DESC";
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, usuario.getIdUsuario());
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                String mensaje = rs.getString("Mensaje");
+                String fecha = rs.getString("Fecha");
+
+                JLabel notificacion = new JLabel(fecha + ": " + mensaje);
+                notificacion.setFont(new Font("Arial", Font.PLAIN, 14));
+                panelNotificaciones.add(notificacion);
+            }
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(this, "Error al cargar las notificaciones: " + ex.getMessage());
+        }
+
+        panelNotificaciones.revalidate();
+        panelNotificaciones.repaint();
     }
 
     public static void main(String[] args) {
