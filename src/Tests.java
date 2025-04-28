@@ -45,4 +45,18 @@ public class Tests {
         assertEquals("Pendiente", reporte.getEstado());
         assertEquals("Archivo2.png", reporte.getArchivoAdjunto());
     }
+
+  @Test
+public void testInicializacionTabla() {
+    DefaultTableModel modeloTabla = new DefaultTableModel(new String[]{
+        "ID Reporte", "Categoría", "Descripción", "Ubicación", 
+        "Fecha", "Archivo Adjunto", "Estado", "ID Usuario"
+    }, 0);
+    String[] columnasEsperadas = {"ID Reporte", "Categoría", "Descripción", "Ubicación", 
+                                  "Fecha", "Archivo Adjunto", "Estado", "ID Usuario"};
+    for (int i = 0; i < columnasEsperadas.length; i++) {
+        assertEquals(columnasEsperadas[i], modeloTabla.getColumnName(i));
+    }
+}
+
 }

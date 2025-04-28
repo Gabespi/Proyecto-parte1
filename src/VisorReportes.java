@@ -87,7 +87,7 @@ class Reporte {
 public class VisorReportes extends JFrame {
     private static final String[] columnas = {"ID Reporte", "Categoría", "Descripción", "Ubicación", 
                                               "Fecha", "Archivo Adjunto", "Estado", "ID Usuario"};
-    private DefaultTableModel modeloTabla;
+    DefaultTableModel modeloTabla;
     private JTable tabla;
 
     public VisorReportes() {
