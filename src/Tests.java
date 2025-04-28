@@ -10,8 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import com.miapp.modelo.Reporte;
 
-
-public class Tests extends VisorReportes{
+public class Tests {
 
     @Test
     public void testGettersReporte() {
