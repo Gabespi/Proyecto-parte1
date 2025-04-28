@@ -85,7 +85,7 @@ class Reporte {
 }
 
 public class VisorReportes extends JFrame {
-    private static final String[] columnas = {"ID Reporte", "Categoría", "Descripción", "Ubicación", 
+    private static final String[] columnas = {"ID Reporte", "Categoria", "Descripcion", "Ubicacion", 
                                               "Fecha", "Archivo Adjunto", "Estado", "ID Usuario"};
     DefaultTableModel modeloTabla;
     private JTable tabla;
@@ -205,7 +205,7 @@ public class VisorReportes extends JFrame {
                 stmt.setInt(6, idReporte);
                 stmt.executeUpdate();
 
-                JOptionPane.showMessageDialog(this, "Reporte actualizado con éxito.");
+                JOptionPane.showMessageDialog(this, "Reporte actualizado con exito.");
                 cargarDatos(); // Recargar los datos
             } catch (SQLException ex) {
                 JOptionPane.showMessageDialog(this, "Error al actualizar el reporte: " + ex.getMessage());

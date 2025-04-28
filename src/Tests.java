@@ -49,14 +49,16 @@ public class Tests {
   @Test
 public void testInicializacionTabla() {
     DefaultTableModel modeloTabla = new DefaultTableModel(new String[]{
-        "ID Reporte", "Categoría", "Descripción", "Ubicación", 
+        "ID Reporte", "Categoria", "Descripcion", "Ubicacion", 
         "Fecha", "Archivo Adjunto", "Estado", "ID Usuario"
     }, 0);
-    String[] columnasEsperadas = {"ID Reporte", "Categoría", "Descripción", "Ubicación", 
+    String[] columnasEsperadas = {"ID Reporte", "Categoria", "Descripcion", "Ubicacion", 
                                   "Fecha", "Archivo Adjunto", "Estado", "ID Usuario"};
     for (int i = 0; i < columnasEsperadas.length; i++) {
         assertEquals(columnasEsperadas[i], modeloTabla.getColumnName(i));
     }
 }
+
+
 
 }
