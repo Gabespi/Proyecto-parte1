@@ -12,17 +12,17 @@ public class PantallaCambiarContraseña extends JFrame {
 
     public PantallaCambiarContraseña() {
         setTitle("Cambiar Contraseña");
-        setSize(400, 300);
+        setSize(512, 512);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
         setResizable(false);
 
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-        panel.setBackground(Color.WHITE);
+        panel.setBackground(Color.decode("#F2EFE7"));
 
         JLabel titulo = new JLabel("Cambiar Contraseña");
-        titulo.setFont(new Font("Arial", Font.BOLD, 20));
+        titulo.setFont(new Font("Times New Roman", Font.BOLD, 20));
         titulo.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         panel.add(Box.createRigidArea(new Dimension(0, 20)));
@@ -32,22 +32,26 @@ public class PantallaCambiarContraseña extends JFrame {
         JPasswordField campoContraseñaActual = new JPasswordField();
         campoContraseñaActual.setMaximumSize(new Dimension(300, 30));
         campoContraseñaActual.setBorder(BorderFactory.createTitledBorder("Contraseña Actual"));
+        campoContraseñaActual.setFont(new Font("Times New Roman", Font.PLAIN, 14));
 
         JPasswordField campoNuevaContraseña = new JPasswordField();
         campoNuevaContraseña.setMaximumSize(new Dimension(300, 30));
         campoNuevaContraseña.setBorder(BorderFactory.createTitledBorder("Nueva Contraseña"));
+        campoNuevaContraseña.setFont(new Font("Times New Roman", Font.PLAIN, 14));
 
         JPasswordField campoConfirmarContraseña = new JPasswordField();
         campoConfirmarContraseña.setMaximumSize(new Dimension(300, 30));
         campoConfirmarContraseña.setBorder(BorderFactory.createTitledBorder("Confirmar Nueva Contraseña"));
+        campoConfirmarContraseña.setFont(new Font("Times New Roman", Font.PLAIN, 14));
 
         JLabel mensajeError = new JLabel(" ");
         mensajeError.setForeground(Color.RED);
         mensajeError.setAlignmentX(Component.CENTER_ALIGNMENT);
+        mensajeError.setFont(new Font("Times New Roman", Font.PLAIN, 14));
 
         JButton btnCambiarContraseña = new JButton("Cambiar Contraseña");
-        btnCambiarContraseña.setFont(new Font("Arial", Font.BOLD, 14));
-        btnCambiarContraseña.setBackground(new Color(33, 150, 243));
+        btnCambiarContraseña.setFont(new Font("Times New Roman", Font.BOLD, 14));
+        btnCambiarContraseña.setBackground(Color.decode("#27548A"));
         btnCambiarContraseña.setForeground(Color.WHITE);
         btnCambiarContraseña.setAlignmentX(Component.CENTER_ALIGNMENT);
 

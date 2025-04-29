@@ -17,7 +17,7 @@ public class PantallaLogin extends JFrame {
     public PantallaLogin() {
         // Configuración de la ventana
         setTitle("Sistema de Sugerencias y Quejas");
-        setSize(400, 400);
+        setSize(512, 512);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setResizable(false);
@@ -25,16 +25,17 @@ public class PantallaLogin extends JFrame {
         // Panel principal con BoxLayout (organiza los elementos en columna)
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-        panel.setBackground(Color.WHITE);
+        panel.setBackground(Color.decode("#F2EFE7"));
+        panel.setBorder(BorderFactory.createEmptyBorder(20, 50, 20, 50)); // Márgenes para centrar
 
         // Etiqueta de título
         JLabel titulo = new JLabel("Sistema de Sugerencias y Quejas");
-        titulo.setFont(new Font("Arial", Font.BOLD, 20));
+        titulo.setFont(new Font("Times New Roman", Font.BOLD, 20));
         titulo.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         // Etiqueta de descripción
         JLabel descripcion = new JLabel("<html><center>Reporta problemas de infraestructura pública de manera rápida y sencilla.</center></html>");
-        descripcion.setFont(new Font("Arial", Font.PLAIN, 14));
+        descripcion.setFont(new Font("Times New Roman", Font.PLAIN, 14));
         descripcion.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         // Espaciador
@@ -48,22 +49,34 @@ public class PantallaLogin extends JFrame {
         JTextField campoUsuario = new JTextField();
         campoUsuario.setMaximumSize(new Dimension(300, 30));
         campoUsuario.setBorder(BorderFactory.createTitledBorder("Usuario o Correo"));
+        campoUsuario.setFont(new Font("Times New Roman", Font.PLAIN, 14));
+        panel.add(campoUsuario);
+        panel.add(Box.createRigidArea(new Dimension(0, 10)));
 
         // Campo de contraseña
         JPasswordField campoPassword = new JPasswordField();
         campoPassword.setMaximumSize(new Dimension(300, 30));
         campoPassword.setBorder(BorderFactory.createTitledBorder("Contraseña"));
+        campoPassword.setFont(new Font("Times New Roman", Font.PLAIN, 14));
+        panel.add(campoPassword);
+        panel.add(Box.createRigidArea(new Dimension(0, 10)));
 
         // Checkbox "Recordar Sesión"
         JCheckBox recordarSesion = new JCheckBox("Recordar sesión");
-        recordarSesion.setBackground(Color.WHITE);
+        recordarSesion.setBackground(Color.decode("#F2EFE7"));
         recordarSesion.setAlignmentX(Component.CENTER_ALIGNMENT);
+        recordarSesion.setFont(new Font("Times New Roman", Font.PLAIN, 14));
+        panel.add(recordarSesion);
+        panel.add(Box.createRigidArea(new Dimension(0, 10)));
 
         // Mensaje de error (por defecto oculto)
         JLabel mensajeError = new JLabel("Favor de introducir los datos correctamente.");
         mensajeError.setForeground(Color.RED);
         mensajeError.setVisible(false);
         mensajeError.setAlignmentX(Component.CENTER_ALIGNMENT);
+        mensajeError.setFont(new Font("Times New Roman", Font.PLAIN, 14));
+        panel.add(mensajeError);
+        panel.add(Box.createRigidArea(new Dimension(0, 10)));
 
         // Botón "¿Olvidaste tu contraseña?"
         JButton btnRecuperar = new JButton("¿Olvidaste tu contraseña?");
@@ -71,26 +84,42 @@ public class PantallaLogin extends JFrame {
         btnRecuperar.setContentAreaFilled(false);
         btnRecuperar.setForeground(Color.BLUE);
         btnRecuperar.setAlignmentX(Component.CENTER_ALIGNMENT);
+        btnRecuperar.setFont(new Font("Times New Roman", Font.PLAIN, 14));
+        panel.add(btnRecuperar);
+        panel.add(Box.createRigidArea(new Dimension(0, 20)));
 
         // Panel de botones
         JPanel panelBotones = new JPanel();
-        panelBotones.setLayout(new FlowLayout());
-        panelBotones.setBackground(Color.WHITE);
+        panelBotones.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 0));
+        panelBotones.setBackground(Color.decode("#F2EFE7"));
 
         JButton btnLogin = new JButton("Iniciar Sesión");
         JButton btnRegistro = new JButton("Registrarse");
 
         // Estilos de botones
-        btnLogin.setFont(new Font("Arial", Font.BOLD, 14));
-        btnLogin.setBackground(new Color(33, 150, 243)); // Azul
+        btnLogin.setFont(new Font("Times New Roman", Font.BOLD, 14));
+        btnLogin.setBackground(Color.decode("#27548A")); // Azul oscuro
         btnLogin.setForeground(Color.WHITE);
 
-        btnRegistro.setFont(new Font("Arial", Font.BOLD, 14));
-        btnRegistro.setBackground(new Color(76, 175, 80)); // Verde
+        btnRegistro.setFont(new Font("Times New Roman", Font.BOLD, 14));
+        btnRegistro.setBackground(Color.decode("#004f30")); // Verde
         btnRegistro.setForeground(Color.WHITE);
 
         panelBotones.add(btnLogin);
         panelBotones.add(btnRegistro);
+        panel.add(panelBotones);
+
+        // Botón "Login Funcionarios"
+        JButton btnLoginFuncionario = new JButton("Login Funcionarios");
+        btnLoginFuncionario.setFont(new Font("Times New Roman", Font.BOLD, 14));
+        btnLoginFuncionario.setBackground(Color.decode("#f37c22")); // Naranja
+        btnLoginFuncionario.setForeground(Color.WHITE);
+        btnLoginFuncionario.setAlignmentX(Component.CENTER_ALIGNMENT);
+        panel.add(Box.createRigidArea(new Dimension(0, 10)));
+        panel.add(btnLoginFuncionario);
+
+        // Agregar panel a la ventana
+        add(panel);
 
         // Acción del botón de registrarse -> ABRE PantallaRegistro.java
         btnRegistro.addActionListener(new ActionListener() {
@@ -147,26 +176,6 @@ public class PantallaLogin extends JFrame {
             }
         });
 
-        // Agregar componentes al panel principal
-        panel.add(campoUsuario);
-        panel.add(Box.createRigidArea(new Dimension(0, 10)));
-        panel.add(campoPassword);
-        panel.add(Box.createRigidArea(new Dimension(0, 10)));
-        panel.add(recordarSesion);
-        panel.add(Box.createRigidArea(new Dimension(0, 10)));
-        panel.add(mensajeError); // Mensaje de error en rojo
-        panel.add(Box.createRigidArea(new Dimension(0, 10)));
-        panel.add(btnRecuperar);
-        panel.add(Box.createRigidArea(new Dimension(0, 10)));
-        panel.add(panelBotones);
-
-        // Botón "Login Funcionarios"
-        JButton btnLoginFuncionario = new JButton("Login Funcionarios");
-        btnLoginFuncionario.setFont(new Font("Arial", Font.BOLD, 14));
-        btnLoginFuncionario.setBackground(new Color(255, 152, 0)); // Naranja
-        btnLoginFuncionario.setForeground(Color.WHITE);
-        btnLoginFuncionario.setAlignmentX(Component.CENTER_ALIGNMENT);
-
         btnLoginFuncionario.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -175,13 +184,6 @@ public class PantallaLogin extends JFrame {
                 loginFuncionario.setVisible(true);
             }
         });
-
-        // Agregar el botón al panel principal
-        panel.add(Box.createRigidArea(new Dimension(0, 10)));
-        panel.add(btnLoginFuncionario);
-
-        // Agregar panel a la ventana
-        add(panel);
     }
 
     public static void main(String[] args) {

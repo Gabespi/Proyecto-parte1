@@ -6,40 +6,46 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-public class PantallaRegistrarReporte extends JFrame { // Cambiado el nombre de la clase
-    
-    public PantallaRegistrarReporte(Usuario usuario) { // Recibe el usuario actual
-        setTitle("Registrar Reporte"); // Cambiar el título
-        setSize(400, 500); // Aumentar el tamaño de la ventana
+public class PantallaRegistrarReporte extends JFrame {
+
+    public PantallaRegistrarReporte(Usuario usuario) {
+        // Configuración de la ventana
+        setTitle("Registrar Reporte");
+        setSize(512, 512);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
         setResizable(false);
 
+        // Panel principal
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-        panel.setBackground(Color.WHITE);
+        panel.setBackground(Color.decode("#F2EFE7"));
+        panel.setBorder(BorderFactory.createEmptyBorder(20, 50, 20, 50)); // Márgenes para centrar
 
+        // Título
         JLabel titulo = new JLabel("Registrar Reporte");
-        titulo.setFont(new Font("Arial", Font.BOLD, 20));
+        titulo.setFont(new Font("Times New Roman", Font.BOLD, 20));
         titulo.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         // ComboBox para seleccionar la categoría
         JLabel labelCategoria = new JLabel("Categoría:");
-        labelCategoria.setFont(new Font("Arial", Font.BOLD, 14));
+        labelCategoria.setFont(new Font("Times New Roman", Font.PLAIN, 14));
         labelCategoria.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         String[] categorias = {"Baches", "Alumbrado", "Basura", "Fugas", "Circulación", "Otro"};
         JComboBox<String> comboCategoria = new JComboBox<>(categorias);
         comboCategoria.setMaximumSize(new Dimension(300, 30));
+        comboCategoria.setFont(new Font("Times New Roman", Font.PLAIN, 14));
 
-        // Campos de texto con mayor altura
+        // Campos de texto
         JTextArea campoDescripcion = crearCampoTextoArea("Descripción");
         JTextArea campoUbicacion = crearCampoTextoArea("Ubicación");
         JTextArea campoRutaArchivos = crearCampoTextoArea("Ruta de Archivos");
 
+        // Botón de registrar
         JButton btnRegistrar = new JButton("Registrar Reporte");
-        btnRegistrar.setFont(new Font("Arial", Font.BOLD, 14));
-        btnRegistrar.setBackground(new Color(33, 150, 243));
+        btnRegistrar.setFont(new Font("Times New Roman", Font.BOLD, 14));
+        btnRegistrar.setBackground(Color.decode("#27548A")); // Azul
         btnRegistrar.setForeground(Color.WHITE);
         btnRegistrar.setAlignmentX(Component.CENTER_ALIGNMENT);
 
@@ -76,17 +82,21 @@ public class PantallaRegistrarReporte extends JFrame { // Cambiado el nombre de 
             }
         });
 
+        // Agregar componentes al panel
         panel.add(titulo);
         panel.add(Box.createRigidArea(new Dimension(0, 10)));
         panel.add(labelCategoria);
         panel.add(comboCategoria);
         panel.add(Box.createRigidArea(new Dimension(0, 10)));
         panel.add(campoDescripcion);
+        panel.add(Box.createRigidArea(new Dimension(0, 10)));
         panel.add(campoUbicacion);
+        panel.add(Box.createRigidArea(new Dimension(0, 10)));
         panel.add(campoRutaArchivos);
         panel.add(Box.createRigidArea(new Dimension(0, 10)));
         panel.add(btnRegistrar);
 
+        // Agregar panel a la ventana
         add(panel);
     }
 
@@ -97,35 +107,14 @@ public class PantallaRegistrarReporte extends JFrame { // Cambiado el nombre de 
         campo.setWrapStyleWord(true);
         campo.setBorder(BorderFactory.createTitledBorder(titulo));
         campo.setMaximumSize(new Dimension(300, 80)); // Ajustar el tamaño máximo
+        campo.setFont(new Font("Times New Roman", Font.PLAIN, 14));
         return campo;
-    }
-
-    // Métodos para crear campos de texto con bordes personalizados
-    private JTextField crearCampoTexto(String titulo) {
-        JTextField campo = new JTextField();
-        campo.setMaximumSize(new Dimension(300, 30));
-        campo.setBorder(BorderFactory.createTitledBorder(titulo));
-        return campo;
-    }
-
-    private JPasswordField crearCampoContraseña(String titulo) {
-        JPasswordField campo = new JPasswordField();
-        campo.setMaximumSize(new Dimension(300, 30));
-        campo.setBorder(BorderFactory.createTitledBorder(titulo));
-        return campo;
-    }
-
-    // Método para resetear colores antes de validar
-    private void resetearColores(JTextField... campos) {
-        for (JTextField campo : campos) {
-            campo.setBackground(Color.WHITE);
-        }
     }
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-            PantallaRegistrarReporte Reporte = new PantallaRegistrarReporte(new Usuario());
-            Reporte.setVisible(true);
+            PantallaRegistrarReporte reporte = new PantallaRegistrarReporte(new Usuario());
+            reporte.setVisible(true);
         });
     }
 }
