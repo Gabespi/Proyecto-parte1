@@ -1,4 +1,3 @@
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -6,8 +5,13 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import javax.swing.*;
 
 public class PantallaLoginFuncionario extends JFrame {
+
+    public JTextField campoCorreo;
+    public JPasswordField campoClave;
+    public JButton btnLogin;
 
     public PantallaLoginFuncionario() {
         setTitle("Login Funcionarios");
@@ -15,7 +19,11 @@ public class PantallaLoginFuncionario extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setResizable(false);
-
+        
+        campoCorreo = new JTextField();//para poder hacer las tests
+        campoClave = new JPasswordField();
+        btnLogin = new JButton("Login");
+        
         // Panel principal
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
@@ -114,4 +122,5 @@ public class PantallaLoginFuncionario extends JFrame {
             loginFuncionario.setVisible(true);
         });
     }
+
 }
