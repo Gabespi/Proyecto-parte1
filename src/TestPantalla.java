@@ -1,6 +1,12 @@
 import org.junit.Test;
+import org.sqlite.Function.Window;
 
 import static org.junit.Assert.*;
+
+import javax.swing.JDialog;
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
+import java.awt.Window;
 
 
 public class TestPantalla{
@@ -24,25 +30,27 @@ public class TestPantalla{
       
     }
 
-       @Test
-       public void testLoginFuncionarioExitoso() {
-           PantallaLoginFuncionario pantalla = new PantallaLoginFuncionario();
-           pantalla.setVisible(true);
-           
-           // 1. Configurar credenciales de prueba (deben existir en tu BD real)
-           pantalla.campoCorreo.setText("prueba");  // Usar un correo que exista en tu BD
-           pantalla.campoClave.setText("1");          // Usar una contraseña correcta
-           
-           // 2. Simular clic en el botón de login
-           pantalla.btnLogin.doClick();
-           x=campoClave.setText("1");
-           // 3. Esperar un tiempo para el procesamiento
-           try {
-               Thread.sleep(2000); // Espera 2 segundos para el procesamiento
-           } catch (InterruptedException e) {
-               e.printStackTrace();
-           }
-           
-           
-}
+    @Test
+    public void testLoginFuncionarioBasico() {
+        PantallaLoginFuncionario pantalla = new PantallaLoginFuncionario();
+        pantalla.setVisible(true);
+        
+        pantalla.campoCorreo.setText("prueba");
+        pantalla.campoClave.setText("1");
+    
+        pantalla.btnLogin.doClick();
+        
+        try {
+            Thread.sleep(2000);
+            // Verificar que la pantalla sigue visible (porque el diálogo está abierto)
+            assertTrue(pantalla.isVisible());
+            
+            // Simular que el usuario cierra el diálogo
+            pantalla.dispose();
+            
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            fail("Test interrumpido");
+        }
+    }
 }
