@@ -95,6 +95,6 @@ public class PantallaCambiarContraseña extends JFrame {
         panel.add(btnCambiarContraseña);
 
         add(panel);
-    }
+    }// falta pedir usuario, para que no cambie la contraseña de todos los usuarios
 }
  
