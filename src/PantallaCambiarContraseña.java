@@ -8,7 +8,6 @@ import java.sql.SQLException;
 
 public class PantallaCambiarContraseña extends JFrame {
     
-    private static final String CONTRASEÑA_ACTUAL = "12345";
 
     public PantallaCambiarContraseña() {
         setTitle("Cambiar Contraseña");

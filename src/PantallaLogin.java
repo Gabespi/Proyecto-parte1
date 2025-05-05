@@ -9,10 +9,6 @@ import java.sql.SQLException;
 
 public class PantallaLogin extends JFrame {
 
-    // Credenciales predefinidas para simulación
-    private static final String USUARIO_VALIDO = "usuario123";
-    private static final String EMAIL_VALIDO = "correo@ejemplo.com";
-    private static final String CONTRASEÑA_VALIDA = "12345";
 
     public PantallaLogin() {
         // Configuración de la ventana
