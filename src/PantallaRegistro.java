@@ -1,4 +1,3 @@
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -12,7 +11,7 @@ public class PantallaRegistro extends JFrame {
     public PantallaRegistro() {
         // Configuración de la ventana
         setTitle("Registro de Usuario");
-        setSize(400, 400);
+        setSize(512, 512);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setResizable(false);
@@ -20,12 +19,12 @@ public class PantallaRegistro extends JFrame {
         // Panel principal con BoxLayout
         JPanel panelPrincipal = new JPanel();
         panelPrincipal.setLayout(new BoxLayout(panelPrincipal, BoxLayout.Y_AXIS));
-        panelPrincipal.setBackground(Color.WHITE);
+        panelPrincipal.setBackground(Color.decode("#F2EFE7"));
 
         // Panel de contenido dentro del JScrollPane
         JPanel panelContenido = new JPanel();
         panelContenido.setLayout(new BoxLayout(panelContenido, BoxLayout.Y_AXIS));
-        panelContenido.setBackground(Color.WHITE);
+        panelContenido.setBackground(Color.decode("#F2EFE7"));
         panelContenido.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20)); // Margen interno
 
         // ScrollPane para permitir desplazamiento
@@ -37,7 +36,7 @@ public class PantallaRegistro extends JFrame {
 
         // Etiqueta de título
         JLabel titulo = new JLabel("Crear Cuenta");
-        titulo.setFont(new Font("Arial", Font.BOLD, 22));
+        titulo.setFont(new Font("Times New Roman", Font.BOLD, 22));
         titulo.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         panelContenido.add(titulo);
@@ -50,12 +49,16 @@ public class PantallaRegistro extends JFrame {
 
         // Selección de Género
         JLabel labelGenero = new JLabel("Género:");
-        labelGenero.setFont(new Font("Arial", Font.BOLD, 14));
+        labelGenero.setFont(new Font("Times New Roman", Font.PLAIN, 14));
         labelGenero.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         JRadioButton radioMasculino = new JRadioButton("Masculino");
         JRadioButton radioFemenino = new JRadioButton("Femenino");
         JRadioButton radioOtro = new JRadioButton("Otro");
+
+        radioMasculino.setFont(new Font("Times New Roman", Font.PLAIN, 14));
+        radioFemenino.setFont(new Font("Times New Roman", Font.PLAIN, 14));
+        radioOtro.setFont(new Font("Times New Roman", Font.PLAIN, 14));
 
         ButtonGroup grupoGenero = new ButtonGroup();
         grupoGenero.add(radioMasculino);
@@ -64,7 +67,7 @@ public class PantallaRegistro extends JFrame {
 
         JPanel panelGenero = new JPanel();
         panelGenero.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 0)); // Ajuste sin espacio innecesario
-        panelGenero.setBackground(Color.WHITE);
+        panelGenero.setBackground(Color.decode("#F2EFE7"));
         panelGenero.add(radioMasculino);
         panelGenero.add(radioFemenino);
         panelGenero.add(radioOtro);
@@ -79,11 +82,12 @@ public class PantallaRegistro extends JFrame {
         JLabel mensajeError = new JLabel(" ");
         mensajeError.setForeground(Color.RED);
         mensajeError.setAlignmentX(Component.CENTER_ALIGNMENT);
+        mensajeError.setFont(new Font("Times New Roman", Font.PLAIN, 14));
 
         // Botón "Crear Cuenta"
         JButton btnCrearCuenta = new JButton("Crear Cuenta");
-        btnCrearCuenta.setFont(new Font("Arial", Font.BOLD, 14));
-        btnCrearCuenta.setBackground(new Color(33, 150, 243)); // Azul
+        btnCrearCuenta.setFont(new Font("Times New Roman", Font.BOLD, 14));
+        btnCrearCuenta.setBackground(Color.decode("#27548A")); // Azul
         btnCrearCuenta.setForeground(Color.WHITE);
         btnCrearCuenta.setAlignmentX(Component.CENTER_ALIGNMENT);
 
@@ -174,6 +178,7 @@ public class PantallaRegistro extends JFrame {
         JTextField campo = new JTextField();
         campo.setMaximumSize(new Dimension(300, 30));
         campo.setBorder(BorderFactory.createTitledBorder(titulo));
+        campo.setFont(new Font("Times New Roman", Font.PLAIN, 14));
         return campo;
     }
 
@@ -181,6 +186,7 @@ public class PantallaRegistro extends JFrame {
         JPasswordField campo = new JPasswordField();
         campo.setMaximumSize(new Dimension(300, 30));
         campo.setBorder(BorderFactory.createTitledBorder(titulo));
+        campo.setFont(new Font("Times New Roman", Font.PLAIN, 14));
         return campo;
     }
 
