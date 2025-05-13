@@ -161,12 +161,15 @@ public class PantallaLogin extends JFrame {
                 String usuario = campoUsuario.getText().trim();
                 String contraseña = new String(campoPassword.getPassword()).trim();
 
+                // Generar el hash de la contraseña ingresada
+                String contraseñaHash = HashUtil.hashPassword(contraseña);
+
                 try (Connection conn = DatabaseConnection.getConnection()) {
                     String sql = "SELECT * FROM Usuarios WHERE (Usuario_Nombre = ? OR Usuario_Correo = ?) AND Usuario_Contraseña = ?";
                     PreparedStatement stmt = conn.prepareStatement(sql);
                     stmt.setString(1, usuario);
                     stmt.setString(2, usuario);
-                    stmt.setString(3, contraseña);
+                    stmt.setString(3, contraseñaHash); // Comparar con el hash almacenado
                     ResultSet rs = stmt.executeQuery();
 
                     if (rs.next()) {

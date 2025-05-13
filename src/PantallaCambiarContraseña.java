@@ -79,17 +79,21 @@ public class PantallaCambiarContraseña extends JFrame {
                     return;
                 }
 
+                // Generar hashes de las contraseñas
+                String contraseñaActualHash = HashUtil.hashPassword(contraseñaActual);
+                String nuevaContraseñaHash = HashUtil.hashPassword(nuevaContraseña);
+
                 try (Connection conn = DatabaseConnection.getConnection()) {
                     String sqlVerificar = "SELECT * FROM Usuarios WHERE Usuario_Correo = ? AND Usuario_Contraseña = ?";
                     PreparedStatement stmtVerificar = conn.prepareStatement(sqlVerificar);
                     stmtVerificar.setString(1, correo);
-                    stmtVerificar.setString(2, contraseñaActual);
+                    stmtVerificar.setString(2, contraseñaActualHash); // Comparar hash
                     ResultSet rs = stmtVerificar.executeQuery();
 
                     if (rs.next()) {
                         String sqlActualizar = "UPDATE Usuarios SET Usuario_Contraseña = ? WHERE Usuario_Correo = ?";
                         PreparedStatement stmtActualizar = conn.prepareStatement(sqlActualizar);
-                        stmtActualizar.setString(1, nuevaContraseña);
+                        stmtActualizar.setString(1, nuevaContraseñaHash); // Guardar el nuevo hash
                         stmtActualizar.setString(2, correo);
 
                         int filasActualizadas = stmtActualizar.executeUpdate();

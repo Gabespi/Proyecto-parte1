@@ -133,13 +133,21 @@ public class PantallaRegistro extends JFrame {
                     return;
                 }
 
+                if (!contraseña.equals(confirmarContraseña)) {
+                    mensajeError.setText("Las contraseñas no coinciden.");
+                    return;
+                }
+
+                // Encriptar la contraseña antes de guardarla
+                String contraseñaHash = HashUtil.hashPassword(contraseña);
+
                 // Insertar en la base de datos
                 try (Connection conn = DatabaseConnection.getConnection()) {
                     String sql = "INSERT INTO Usuarios (Usuario_Nombre, Usuario_Correo, Usuario_Contraseña, Usuario_Genero, Usuario_Telefono, Usuario_Primer_Nombre, Usuario_Apellido_Paterno, Usuario_Apellido_Materno) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
                     PreparedStatement stmt = conn.prepareStatement(sql);
                     stmt.setString(1, usuario);
                     stmt.setString(2, correo);
-                    stmt.setString(3, contraseña);
+                    stmt.setString(3, contraseñaHash); // Guardar la contraseña encriptada
                     stmt.setString(4, genero);
                     stmt.setString(5, telefono);
                     stmt.setString(6, primerNombre);
