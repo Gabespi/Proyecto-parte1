@@ -8,7 +8,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class PantallaLogin extends JFrame {
-
+    public JTextField campoUsuario; // Cambiado a atributo de clase
+    public JPasswordField campoPassword; // Cambiado a atributo de clase
+    public JButton btnLogin; // Cambiado a atributo de clase
 
     public PantallaLogin() {
         // Configuración de la ventana
@@ -42,7 +44,7 @@ public class PantallaLogin extends JFrame {
         panel.add(Box.createRigidArea(new Dimension(0, 20)));
 
         // Campo de usuario/correo
-        JTextField campoUsuario = new JTextField();
+        campoUsuario = new JTextField();
         campoUsuario.setMaximumSize(new Dimension(300, 30));
         campoUsuario.setBorder(BorderFactory.createTitledBorder("Usuario o Correo"));
         campoUsuario.setFont(new Font("Times New Roman", Font.PLAIN, 14));
@@ -50,7 +52,7 @@ public class PantallaLogin extends JFrame {
         panel.add(Box.createRigidArea(new Dimension(0, 10)));
 
         // Campo de contraseña
-        JPasswordField campoPassword = new JPasswordField();
+        campoPassword = new JPasswordField();
         campoPassword.setMaximumSize(new Dimension(300, 30));
         campoPassword.setBorder(BorderFactory.createTitledBorder("Contraseña"));
         campoPassword.setFont(new Font("Times New Roman", Font.PLAIN, 14));
@@ -112,7 +114,7 @@ public class PantallaLogin extends JFrame {
         panelBotones.setBackground(Color.decode("#F2EFE7"));
 
 
-        JButton btnLogin = new JButton("Iniciar Sesión");
+        btnLogin = new JButton("Iniciar Sesión");
         JButton btnRegistro = new JButton("Registrarse");
 
         // Estilos de botones

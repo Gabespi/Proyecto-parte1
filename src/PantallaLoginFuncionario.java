@@ -8,6 +8,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class PantallaLoginFuncionario extends JFrame {
+    public JTextField campoCorreo; // Cambiado a atributo de clase
+    public JPasswordField campoClave; // Cambiado a atributo de clase
+    public JButton btnLogin; // Cambiado a atributo de clase
 
     public PantallaLoginFuncionario() {
         setTitle("Login Funcionarios");
@@ -27,12 +30,12 @@ public class PantallaLoginFuncionario extends JFrame {
         titulo.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         // Campo de correo
-        JTextField campoCorreo = new JTextField();
+        campoCorreo = new JTextField();
         campoCorreo.setMaximumSize(new Dimension(300, 50));
         campoCorreo.setBorder(BorderFactory.createTitledBorder("Correo"));
 
         // Campo de clave
-        JPasswordField campoClave = new JPasswordField();
+        campoClave = new JPasswordField();
         campoClave.setMaximumSize(new Dimension(300, 50));
         campoClave.setBorder(BorderFactory.createTitledBorder("Clave"));
 
@@ -42,7 +45,7 @@ public class PantallaLoginFuncionario extends JFrame {
         mensajeError.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         // Botón de login
-        JButton btnLogin = new JButton("Iniciar Sesión");
+        btnLogin = new JButton("Iniciar Sesión");
         btnLogin.setFont(new Font("Arial", Font.BOLD, 14));
         btnLogin.setBackground(new Color(33, 150, 243)); // Azul
         btnLogin.setForeground(Color.WHITE);
