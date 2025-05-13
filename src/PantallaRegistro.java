@@ -7,7 +7,12 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public class PantallaRegistro extends JFrame {
-    
+    public JTextField campoNombre;
+    public JTextField campoCorreo;
+    public JPasswordField campoPassword;
+    public JPasswordField campoPasswordConfirm;
+    public JButton btnCrearCuenta;
+
     public PantallaRegistro() {
         // Configuración de la ventana
         setTitle("Registro de Usuario");
@@ -42,8 +47,8 @@ public class PantallaRegistro extends JFrame {
         panelContenido.add(titulo);
         panelContenido.add(Box.createRigidArea(new Dimension(0, 15)));
 
-        // Campos de entrada
-        JTextField campoNombre = crearCampoTexto("Nombre");
+        // Inicializar los campos
+        campoNombre = crearCampoTexto("Nombre");
         JTextField campoApellidoPaterno = crearCampoTexto("Apellido Paterno");
         JTextField campoApellidoMaterno = crearCampoTexto("Apellido Materno");
 
@@ -74,9 +79,9 @@ public class PantallaRegistro extends JFrame {
 
         JTextField campoTelefono = crearCampoTexto("Número de Teléfono");
         JTextField campoUsuario = crearCampoTexto("Nombre de Usuario");
-        JTextField campoCorreo = crearCampoTexto("Correo Electrónico");
-        JPasswordField campoPassword = crearCampoContraseña("Contraseña");
-        JPasswordField campoPasswordConfirm = crearCampoContraseña("Confirmar Contraseña");
+        campoCorreo = crearCampoTexto("Correo Electrónico");
+        campoPassword = crearCampoContraseña("Contraseña");
+        campoPasswordConfirm = crearCampoContraseña("Confirmar Contraseña");
 
         // Mensaje de error
         JLabel mensajeError = new JLabel(" ");
@@ -85,7 +90,7 @@ public class PantallaRegistro extends JFrame {
         mensajeError.setFont(new Font("Times New Roman", Font.PLAIN, 14));
 
         // Botón "Crear Cuenta"
-        JButton btnCrearCuenta = new JButton("Crear Cuenta");
+        btnCrearCuenta = new JButton("Crear Cuenta");
         btnCrearCuenta.setFont(new Font("Times New Roman", Font.BOLD, 14));
         btnCrearCuenta.setBackground(Color.decode("#27548A")); // Azul
         btnCrearCuenta.setForeground(Color.WHITE);

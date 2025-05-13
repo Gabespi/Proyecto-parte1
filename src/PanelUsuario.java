@@ -130,7 +130,7 @@ public class PanelUsuario extends JFrame {
         }
     }
 
-    private void cargarNotificaciones(JPanel panelNotificaciones) {
+    public void cargarNotificaciones(JPanel panelNotificaciones) {
         panelNotificaciones.removeAll(); // Limpiar notificaciones previas
 
         try (Connection conn = DatabaseConnection.getConnection()) {

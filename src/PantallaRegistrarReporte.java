@@ -8,6 +8,12 @@ import java.sql.SQLException;
 
 public class PantallaRegistrarReporte extends JFrame {
 
+    private JComboBox<String> comboCategoria;
+    private JTextArea campoDescripcion;
+    private JTextArea campoUbicacion;
+    private JTextArea campoRutaArchivos;
+    private JButton btnRegistrar;
+
     public PantallaRegistrarReporte(Usuario usuario) {
         // Configuración de la ventana
         setTitle("Registrar Reporte");
@@ -33,17 +39,17 @@ public class PantallaRegistrarReporte extends JFrame {
         labelCategoria.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         String[] categorias = {"Baches", "Alumbrado", "Basura", "Fugas", "Circulación", "Otro"};
-        JComboBox<String> comboCategoria = new JComboBox<>(categorias);
+        comboCategoria = new JComboBox<>(categorias);
         comboCategoria.setMaximumSize(new Dimension(300, 30));
         comboCategoria.setFont(new Font("Times New Roman", Font.PLAIN, 14));
 
         // Campos de texto
-        JTextArea campoDescripcion = crearCampoTextoArea("Descripción");
-        JTextArea campoUbicacion = crearCampoTextoArea("Ubicación");
-        JTextArea campoRutaArchivos = crearCampoTextoArea("Ruta de Archivos");
+        campoDescripcion = crearCampoTextoArea("Descripción");
+        campoUbicacion = crearCampoTextoArea("Ubicación");
+        campoRutaArchivos = crearCampoTextoArea("Ruta de Archivos");
 
         // Botón de registrar
-        JButton btnRegistrar = new JButton("Registrar Reporte");
+        btnRegistrar = new JButton("Registrar Reporte");
         btnRegistrar.setFont(new Font("Times New Roman", Font.BOLD, 14));
         btnRegistrar.setBackground(Color.decode("#27548A")); // Azul
         btnRegistrar.setForeground(Color.WHITE);
@@ -109,6 +115,22 @@ public class PantallaRegistrarReporte extends JFrame {
         campo.setMaximumSize(new Dimension(300, 80)); // Ajustar el tamaño máximo
         campo.setFont(new Font("Times New Roman", Font.PLAIN, 14));
         return campo;
+    }
+
+    public JComboBox<String> getComboCategoria() {
+        return comboCategoria;
+    }
+
+    public JTextArea getCampoDescripcion() {
+        return campoDescripcion;
+    }
+
+    public JTextArea getCampoUbicacion() {
+        return campoUbicacion;
+    }
+
+    public JButton getBtnRegistrar() {
+        return btnRegistrar;
     }
 
     public static void main(String[] args) {
