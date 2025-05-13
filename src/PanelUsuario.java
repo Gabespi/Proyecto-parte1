@@ -10,6 +10,7 @@ public class PanelUsuario extends JFrame {
 
     private Usuario usuario; // Atributo para almacenar el usuario actual
     private JTable tablaReportes; // Tabla para mostrar los reportes
+    private JPanel panelNotificaciones; // Panel de notificaciones
 
     public PanelUsuario(Usuario usuario) {
         this.usuario = usuario; // Recibir el usuario como parámetro
@@ -85,7 +86,7 @@ public class PanelUsuario extends JFrame {
         cargarReportes(modeloTabla);
 
         // Panel de notificaciones
-        JPanel panelNotificaciones = new JPanel();
+        panelNotificaciones = new JPanel();
         panelNotificaciones.setLayout(new BoxLayout(panelNotificaciones, BoxLayout.Y_AXIS));
         panelNotificaciones.setBackground(Color.WHITE);
         panelNotificaciones.setBorder(BorderFactory.createTitledBorder("Notificaciones"));
@@ -153,6 +154,10 @@ public class PanelUsuario extends JFrame {
 
         panelNotificaciones.revalidate();
         panelNotificaciones.repaint();
+    }
+
+    public JPanel getPanelNotificaciones() {
+        return panelNotificaciones;
     }
 
     public static void main(String[] args) {
